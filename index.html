@@ -3,9 +3,21 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Fret Not: a 30-minute daily guitar practice routine for beginners, with timers, a metronome and progress tracking.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; manifest-src 'self'; worker-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="theme-color" media="(prefers-color-scheme: light)" content="#5a1a1f">
+<meta name="theme-color" media="(prefers-color-scheme: dark)" content="#4a1519">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#5a1a1f">
+<meta name="apple-mobile-web-app-title" content="Fret Not">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="format-detection" content="telephone=no">
 <title>Fret Not</title>
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:wght@400;500;700&display=swap">
@@ -37,8 +49,10 @@ html{height:100%;background:var(--bg);scroll-padding-top:env(safe-area-inset-top
 body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font);
   font-size:16px;line-height:1.5;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
 button,input{font:inherit;color:inherit}
-button{cursor:pointer;-webkit-user-select:none;user-select:none}
+button{cursor:pointer;-webkit-user-select:none;user-select:none;touch-action:manipulation}
+body{overscroll-behavior-y:none}
 :focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+[tabindex="-1"]:focus{outline:none}
 #app{max-width:480px;margin:0 auto;padding:20px 20px 110px}
 body.in-session #app{padding-bottom:0}
 h1{font-size:28px;font-weight:500;line-height:1.25;margin:8px 0 4px;letter-spacing:-.2px}
@@ -61,7 +75,7 @@ svg.i{width:20px;height:20px;fill:currentColor;flex:none}
 .btn.wide{width:100%}
 .btn.xl{height:56px;font-size:16px;margin-top:24px}
 .btn.xl svg.i{width:22px;height:22px}
-.icon-btn{width:40px;height:40px;border-radius:50%;border:none;background:transparent;display:inline-flex;
+.icon-btn{width:44px;height:44px;border-radius:50%;border:none;background:transparent;display:inline-flex;
   align-items:center;justify-content:center;color:var(--muted)}
 .icon-btn:active{background:var(--surface)}
 .icon-btn.on{background:var(--primary);color:var(--on-primary)}
@@ -77,7 +91,7 @@ svg.i{width:20px;height:20px;fill:currentColor;flex:none}
 .pick{width:44px;height:48px;flex:none;filter:drop-shadow(0 2px 0 rgba(0,0,0,.18))}
 .pick .body{fill:var(--accent)}
 .pick .face{fill:none;stroke:var(--on-accent);stroke-width:5;stroke-linecap:round}
-.wordmark{font-family:var(--display);font-weight:700;font-size:30px;line-height:1;letter-spacing:-.5px}
+.wordmark{margin:0;color:inherit;font-family:var(--display);font-weight:700;font-size:30px;line-height:1;letter-spacing:-.5px}
 .tagline{font-size:14px;opacity:.85;margin-top:4px}
 .hero-row{margin-top:20px;position:relative;z-index:1}
 .hero-row .streak{display:inline-block;margin-top:12px}
@@ -132,7 +146,7 @@ body.in-session #nav{display:none}
 .seg{flex:1;height:4px;border-radius:2px;background:var(--line)}
 .seg.done{background:var(--primary)}
 .seg.cur{background:linear-gradient(90deg,var(--primary) 50%,var(--line) 50%)}
-.w40{width:40px}
+.w40{width:44px}
 .s-title{text-align:center;font-size:22px;margin:16px 0 4px}
 .ring-wrap{position:relative;width:148px;height:148px;margin:8px auto 4px}
 .ring{width:100%;height:100%}
@@ -172,7 +186,7 @@ body.in-session #nav{display:none}
   border-bottom:2px solid var(--primary);background:transparent;border-radius:0;-moz-appearance:textfield}
 .stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .seg-ctl{display:flex;border:1px solid var(--line);border-radius:999px;overflow:hidden;max-width:260px;margin:0 auto 16px}
-.seg-ctl button{flex:1;height:36px;border:none;background:transparent;font-size:14px;font-weight:500;color:var(--muted)}
+.seg-ctl button{flex:1;white-space:nowrap;padding:0 14px;height:36px;border:none;background:transparent;font-size:14px;font-weight:500;color:var(--muted)}
 .seg-ctl button.on{background:var(--tint);color:var(--primary)}
 .lvls{display:flex;justify-content:center;gap:6px}
 .lvls .chip{padding:0 11px;min-width:0;font-size:14px}
@@ -218,13 +232,79 @@ body.in-session #nav{display:none}
 .s-row .lbl{flex:1}
 .s-row .lbl small{display:block;color:var(--muted);font-size:13px}
 .mini{display:flex;align-items:center;gap:4px}
-.mini .icon-btn{width:36px;height:36px;background:var(--surface);color:var(--text)}
+.mini .icon-btn{width:40px;height:40px;background:var(--surface);color:var(--text)}
 .mini span{min-width:64px;text-align:center;font-size:15px}
 .switch{width:52px;height:32px;border-radius:16px;border:2px solid var(--muted);background:var(--surface);position:relative;flex:none;padding:0}
 .switch::after{content:"";position:absolute;top:6px;left:6px;width:16px;height:16px;border-radius:50%;background:var(--muted);transition:all .15s}
 .switch[aria-checked="true"]{background:var(--primary);border-color:var(--primary)}
 .switch[aria-checked="true"]::after{left:24px;top:2px;width:24px;height:24px;background:var(--on-primary)}
 
+
+/* Hover (mouse) */
+@media (hover:hover){
+  .btn.primary:hover{filter:brightness(1.15)}
+  .btn.tonal:hover{filter:brightness(.96)}
+  .btn.outline:hover,.btn.text:hover{background:var(--surface)}
+  .icon-btn:hover{background:var(--surface)}
+  .metro .icon-btn:hover{background:var(--bg)}
+  .icon-btn.on:hover{background:var(--primary);filter:brightness(1.15)}
+  button.chip:not(:disabled):hover{border-color:var(--primary)}
+  .nav-b:hover .pill{background:var(--surface)}
+  .nav-b.on:hover .pill{background:var(--tint)}
+  .seg-ctl button:hover{color:var(--text)}
+}
+.s-body{display:grid;grid-template-columns:minmax(0,1fr);grid-template-areas:"ring" "content" "dock"}
+.s-body .ring-wrap{grid-area:ring} .s-body #content{grid-area:content} .s-body .dock{grid-area:dock}
+.keys{display:none}
+
+/* Laptop */
+@media (min-width:900px){
+  #app{max-width:1080px;padding:40px 48px 48px 136px}
+  body.in-session #app{padding:32px 48px 40px;max-width:1080px}
+  #nav{top:0;right:auto;width:96px;border-top:none;border-right:1px solid var(--line);padding:24px 0 0}
+  .nav-in{flex-direction:column;gap:12px;max-width:none}
+  .nav-b{flex:none;padding:6px 0}
+  #toast{bottom:32px}
+  .home{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:48px;align-items:start}
+  .col-side{position:sticky;top:40px}
+  .col-side h2:first-of-type{margin-top:4px}
+  .col-side .sug:first-child{margin-top:0}
+  .hero{padding:28px 32px 30px}
+  .wordmark{font-size:38px}
+  .pick{width:54px;height:58px}
+  .hero-row .t{font-size:28px}
+  #app > h1{font-size:34px}
+  .s-head{max-width:640px;margin:0 auto}
+  .s-title{font-size:28px;margin:20px 0 24px}
+  .s-body{grid-template-columns:340px minmax(0,1fr);grid-template-areas:"ring content" "dock content";gap:24px 40px;align-items:start}
+  .s-body .ring-wrap{width:240px;height:240px;margin:8px auto 0}
+  .ring-time{font-size:52px}
+  .s-body #content{margin:0;min-height:480px;background:var(--surface);border-radius:28px;padding:36px 32px;
+    display:flex;flex-direction:column;justify-content:center}
+  .s-body .dock{position:static;margin:0;padding:0}
+  .keys{display:block;text-align:center;font-size:12px;color:var(--muted);margin-top:14px}
+  .chord-name{font-size:88px}
+  .diagram{width:200px}
+  .pair{font-size:64px}
+  .drill{font-size:72px}
+  .perm span{width:72px;height:84px;font-size:42px}
+  .instr{font-size:16px;max-width:440px}
+  .grid{max-width:520px}
+  .cell .arr{font-size:32px}
+  .cell .cnt{font-size:14px}
+  .stepper input{width:140px;height:80px;font-size:52px}
+  .seg-ctl,.metro .icon-btn.on{}
+  .s-body #content .seg-ctl{background:var(--bg)}
+  .s-body #content .perm span,.s-body #content .stepper .icon-btn{background:var(--bg)}
+  .s-body #content .cell.now{background:var(--bg)}
+}
+@media (min-width:900px) and (max-height:740px){
+  .s-body .ring-wrap{width:180px;height:180px}
+  .s-body #content{min-height:0}
+}
+
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.ver{font-size:12px;color:var(--muted);margin-top:24px}
 /* Toast */
 #toast{position:fixed;left:50%;bottom:calc(88px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);
   background:#323232;color:#fff;padding:12px 18px;border-radius:8px;font-size:14px;max-width:calc(100% - 32px);
@@ -251,7 +331,7 @@ body.in-session #nav{display:none}
 </head>
 <body>
 <main id="app"></main>
-<nav id="nav"></nav>
+<nav id="nav" aria-label="Main"></nav>
 <div id="toast" role="status"></div>
 <script>
 (function(){
@@ -289,21 +369,40 @@ function streak(){ let n=0; const d=new Date(); if(!S.days.includes(today(d))) d
 const COUNTS = ["1","&","2","&","3","&","4","&"];
 
 /* ---------- Storage (this device only) ---------- */
+const VERSION = "1.1.0";
 const KEY = "guitar-practice-v1";
+const clamp = (n, lo, hi, dflt) => { n = Math.round(Number(n)); return Number.isFinite(n) ? Math.max(lo, Math.min(hi, n)) : dflt; };
+const isDay = d => typeof d === "string" && /^\d{4}-\d{2}-\d{2}$/.test(d);
+/* Validate anything read from storage so a corrupted or old record can never break the app. */
+function sanitize(raw){
+  const d = defaults();
+  if(!raw || typeof raw !== "object") return d;
+  const st = raw.settings || {}, dur = st.dur || {};
+  d.settings.bpm = clamp(st.bpm, 40, 200, 60);
+  for(const k of Object.keys(d.settings.dur)) d.settings.dur[k] = clamp(dur[k], 1, 30, d.settings.dur[k]);
+  const ch = Array.isArray(st.chords) ? ORDER.filter(c => st.chords.includes(c)) : [];
+  d.settings.chords = ch.length >= 2 ? ch : ["Em","Am"];
+  d.settings.random = st.random === true;
+  d.settings.voice = st.voice !== false;
+  d.level = clamp(raw.level, 1, 4, 1);
+  d.maxLevel = Math.max(d.level, clamp(raw.maxLevel, 1, 4, 1));
+  if(raw.form && typeof raw.form === "object")
+    for(const c of ORDER) if(Array.isArray(raw.form[c])) d.form[c] = raw.form[c].filter(x => typeof x === "boolean").slice(-30);
+  if(raw.changes && typeof raw.changes === "object")
+    for(let i=0;i<ORDER.length-1;i++) for(let j=i+1;j<ORDER.length;j++){
+      const k = ORDER[i]+"-"+ORDER[j];
+      if(Array.isArray(raw.changes[k])) d.changes[k] = raw.changes[k].filter(x => x && isDay(x.d) && Number.isFinite(x.n)).map(x => ({d:x.d, n:clamp(x.n,0,120,0)})).slice(-60);
+    }
+  if(Array.isArray(raw.cold)) d.cold = raw.cold.filter(x => x && isDay(x.d) && Number.isFinite(x.c) && Number.isFinite(x.t)).slice(-60);
+  if(Array.isArray(raw.days)) d.days = [...new Set(raw.days.filter(isDay))].sort().slice(-180);
+  return d;
+}
 function defaults(){
   return {settings:{bpm:60, dur:{finger:4,form:8,changes:8,rhythm:10}, chords:["Em","Am"], random:false, voice:true},
           level:1, maxLevel:1, form:{}, changes:{}, cold:[], days:[]};
 }
-let S = defaults();
-try{
-  const raw = JSON.parse(localStorage.getItem(KEY) || "null");
-  if(raw){
-    const d = defaults();
-    S = Object.assign(d, raw);
-    S.settings = Object.assign(d.settings, raw.settings || {});
-    S.settings.dur = Object.assign(defaults().settings.dur, (raw.settings||{}).dur || {});
-  }
-}catch(e){ S = defaults(); }
+function load(){ try{ return sanitize(JSON.parse(localStorage.getItem(KEY) || "null")); }catch(e){ return defaults(); } }
+let S = load();
 function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
 
 /* ---------- Helpers ---------- */
@@ -367,6 +466,11 @@ const metro = {
   },
   stop(){ this.on = false; clearInterval(this.timer); },
   sched(){
+    /* If the tab was throttled, jump ahead on the beat grid instead of firing a burst of missed clicks. */
+    if(this.next < ctx.currentTime - 0.05){
+      const missed = Math.ceil((ctx.currentTime - this.next) / this.spb);
+      this.next += missed * this.spb; this.beat += missed;
+    }
     while(this.next < ctx.currentTime + 0.12){
       const acc = this.beat % 4 === 0;
       blip(this.next, acc ? 1600 : 1000, 0.035, acc ? 0.6 : 0.38);
@@ -398,12 +502,14 @@ async function wake(){
 }
 function unwake(){ try{ if(wl) wl.release(); }catch(e){} wl = null; }
 document.addEventListener("visibilitychange", () => {
-  if(document.visibilityState === "visible" && sess && !sess.paused && sess.step <= 3) wake();
+  if(!sess || sess.step < 0 || sess.step > 3) return;
+  if(document.visibilityState === "hidden" && !sess.paused){ togglePause(); sess.autoPaused = true; }
+  else if(document.visibilityState === "visible" && sess.autoPaused){ sess.autoPaused = false; toast("Paused while you were away. Tap Resume when ready."); }
 });
 
 /* ---------- Chord diagram ---------- */
 function diagram(name){
-  const c = CHORDS[name]; let s = '<svg class="diagram" viewBox="0 0 150 172" aria-label="'+c.say+' fingering">';
+  const c = CHORDS[name]; let s = '<svg class="diagram" viewBox="0 0 150 172" role="img" aria-label="'+c.say+' chord diagram">';
   const x = i => 20 + i*22;
   for(let i=0;i<6;i++) s += '<line class="str" x1="'+x(i)+'" y1="30" x2="'+x(i)+'" y2="150"/>';
   for(let f=1;f<=4;f++) s += '<line class="fr" x1="20" y1="'+(30+f*30)+'" x2="130" y2="'+(30+f*30)+'"/>';
@@ -437,7 +543,7 @@ function suggestions(){
 }
 
 /* ---------- Session ---------- */
-let view = "home", sess = null, lastE = -1, resetArmed = false;
+let view = "home", sess = null, lastE = -1, resetArmed = false, quitArmed = false, quitT = null;
 
 function startSession(){
   audio(); say(" ");
@@ -472,6 +578,12 @@ function finish(){
   chime(); setTimeout(() => say("Practice complete"), 450);
   render();
 }
+/* Ending mid-block needs a second tap so a stray touch can't throw away a session. */
+function requestQuit(){
+  if(!sess || sess.step < 0 || sess.step > 3 || quitArmed){ clearTimeout(quitT); quitArmed = false; quit(); return; }
+  quitArmed = true; toast("Tap again to end this session.");
+  clearTimeout(quitT); quitT = setTimeout(() => { quitArmed = false; }, 3200);
+}
 function quit(){
   metro.stop(); unwake();
   if(sess && sess.step >= 0 && sess.step <= 3) markDay();
@@ -484,7 +596,7 @@ function togglePause(){
   }else{
     const d = performance.now() - sess.pausedAt;
     sess.endAt += d; if(sess.sub.drillEnd) sess.sub.drillEnd += d;
-    sess.paused = false; if(sess.metroWas) metro.begin();
+    sess.paused = false; sess.autoPaused = false; audio(); if(sess.metroWas) metro.begin(); wake();
   }
   render();
 }
@@ -553,13 +665,13 @@ function navView(){
 function homeView(){
   const d = S.settings.dur, total = d.finger + d.form + d.changes + d.rhythm;
   const sk = streak();
-  let h = '<section class="hero"><div class="brand">'+PICK("pick",false)+'<div><div class="wordmark">Fret Not</div><div class="tagline">'+TAG+'</div></div></div>';
+  let h = '<div class="home"><div class="col-main"><section class="hero"><div class="brand">'+PICK("pick",false)+'<div><h1 class="wordmark">Fret Not</h1><div class="tagline">'+TAG+'</div></div></div>';
   h += '<div class="hero-row"><div class="t">Today\'s practice</div><div class="s">'+total+' minutes in 4 blocks, plus a quick cold check</div>'+(sk?'<span class="streak">'+sk+'-day streak</span>':'')+'</div></section>';
   h += '<ol class="plan"><li><span class="pn">0</span><div class="grow"><b>Cold check</b><span class="muted">Form yesterday\'s chords before warming up</span></div><span class="mins">1 min</span></li>';
   BLOCKS.forEach((b,i) => {
     h += '<li><span class="pn">'+(i+1)+'</span><div class="grow"><b>'+b.name+'</b><span class="muted">'+b.hint+'</span></div><span class="mins">'+d[b.id]+' min</span></li>';
   });
-  h += '</ol><button class="btn primary wide xl" data-a="start">'+I.play+' Start practice</button>';
+  h += '</ol><button class="btn primary wide xl" data-a="start">'+I.play+' Start practice</button></div><aside class="col-side">';
   suggestions().forEach(s => h += '<div class="sug"><p>'+s.text+'</p><button class="btn" data-a="'+s.a+'" data-v="'+s.v+'">'+s.label+'</button></div>');
   const now = new Date(), dow = (now.getDay() + 6) % 7;
   h += '<h2>This week</h2><div class="days">';
@@ -569,7 +681,7 @@ function homeView(){
     h += '<div class="day '+(S.days.includes(k)?"done ":"")+(i===dow?"today":"")+'"><i></i><span>'+l+'</span></div>';
   });
   h += '</div><h2>Your chords</h2><div class="chips">'+unlocked().map(c => '<span class="chip on">'+c+'</span>').join("")+'</div>';
-  h += '<p class="muted meta">Rhythm level '+S.level+' of 4 at '+S.settings.bpm+' BPM</p>';
+  h += '<p class="muted meta">Rhythm level '+S.level+' of 4 at '+S.settings.bpm+' BPM</p></aside></div>';
   return h;
 }
 
@@ -579,14 +691,16 @@ function sessionView(){
   const title = st < 0 ? "Cold check" : st > 3 ? "Session done" : BLOCKS[st].name;
   let h = '<header class="s-head"><button class="icon-btn" data-a="quit" aria-label="End session">'+I.close+'</button><div class="segs">'+segs+'</div><span class="w40"></span></header>';
   h += '<h1 class="s-title">'+title+'</h1>';
+  h += '<div class="s-body">';
   if(st >= 0 && st <= 3){
-    h += '<div class="ring-wrap '+(s.paused?"paused":"")+'"><svg class="ring" viewBox="0 0 168 168"><circle class="track" cx="84" cy="84" r="74"/><circle class="prog" id="ringp" cx="84" cy="84" r="74" transform="rotate(-90 84 84)"/></svg><div class="ring-time" id="rtime"></div></div>';
+    h += '<div class="ring-wrap '+(s.paused?"paused":"")+'"><svg class="ring" viewBox="0 0 168 168"><circle class="track" cx="84" cy="84" r="74"/><circle class="prog" id="ringp" cx="84" cy="84" r="74" transform="rotate(-90 84 84)"/></svg><div class="ring-time" id="rtime" role="timer" aria-label="Time left in block"></div></div>';
   }
   h += '<section id="content">'+contentView()+'</section>';
   if(st >= 0 && st <= 3){
     h += '<div class="dock">'+metroView();
-    h += '<div class="controls"><button class="btn tonal" data-a="pause">'+(s.paused ? I.play+" Resume" : I.pause+" Pause")+'</button><button class="btn outline" data-a="skip">'+I.skip+(st===3?" Finish":" Next")+'</button></div></div>';
+    h += '<div class="controls"><button class="btn tonal" data-a="pause">'+(s.paused ? I.play+" Resume" : I.pause+" Pause")+'</button><button class="btn outline" data-a="skip">'+I.skip+(st===3?" Finish":" Next")+'</button></div><p class="keys">Space pause &nbsp; M metronome &nbsp; Enter confirm &nbsp; Esc end</p></div>';
   }
+  h += '</div>';
   return h;
 }
 
@@ -646,8 +760,8 @@ function contentView(){
     }else if(sub.phase === "run"){
       h += '<div class="drill" id="drill">1:00</div><p class="instr">Change back and forth. Count every clean change.</p>';
     }else{
-      const v = l ?? 10;
-      h += '<p class="instr">How many clean changes?</p><div class="stepper"><button class="icon-btn" data-a="ch-step" data-v="-1" aria-label="One less">−</button><input id="cnt" type="number" inputmode="numeric" min="0" max="120" value="'+v+'"><button class="icon-btn" data-a="ch-step" data-v="1" aria-label="One more">+</button></div><button class="btn primary wide" data-a="ch-save">Save</button>';
+      const v = sub.cnt ?? l ?? 10;
+      h += '<p class="instr">How many clean changes?</p><div class="stepper"><button class="icon-btn" data-a="ch-step" data-v="-1" aria-label="One less">−</button><input id="cnt" type="number" inputmode="numeric" min="0" max="120" aria-label="Clean changes" value="'+v+'"><button class="icon-btn" data-a="ch-step" data-v="1" aria-label="One more">+</button></div><button class="btn primary wide" data-a="ch-save">Save</button>';
     }
     return h;
   }
@@ -725,10 +839,14 @@ function settingsView(){
   h += '<div class="s-row"><span class="lbl">Spoken prompts<small>Says chord names so you can keep your eyes closed</small></span><button class="switch" role="switch" aria-checked="'+st.voice+'" data-a="set-voice" aria-label="Spoken prompts"></button></div>';
   h += '<h2>Data</h2><div class="s-row"><span class="lbl">Progress is saved in this browser only<small>Phone and laptop keep separate logs</small></span></div>';
   h += '<button class="btn text danger" style="margin-top:8px;padding:0" data-a="reset">'+(resetArmed?"Tap again to erase all progress":"Reset progress")+'</button>';
+  h += '<p class="ver">Fret Not '+VERSION+'</p>';
   return h;
 }
 
 /* ---------- Actions ---------- */
+document.addEventListener("input", e => { if(e.target.id === "cnt" && sess && sess.sub) sess.sub.cnt = parseInt(e.target.value, 10); });
+/* Keep another open tab in step, but never mid-session. */
+window.addEventListener("storage", e => { if(e.key === KEY && !sess){ S = load(); render(); } });
 document.addEventListener("click", e => {
   const el = e.target.closest("[data-a]");
   if(!el || el.disabled) return;
@@ -736,21 +854,26 @@ document.addEventListener("click", e => {
 });
 
 document.addEventListener("keydown", e => {
-  if(view !== "session" || !sess || e.metaKey || e.ctrlKey || e.altKey) return;
+  if(view !== "session" || !sess || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+  if(e.target && e.target.closest && e.target.closest("button") && (e.key === "Enter" || e.key === " ")) return;
   if(e.target && e.target.tagName === "INPUT"){ if(e.key === "Enter"){ e.preventDefault(); act("ch-save"); } return; }
   const inBlock = sess.step >= 0 && sess.step <= 3;
   if(e.key === " " && inBlock){ e.preventDefault(); togglePause(); }
   else if((e.key === "m" || e.key === "M") && inBlock){ act("m-toggle"); }
   else if(e.key === "Enter"){ const b = document.querySelector("#content .btn.primary"); if(b){ e.preventDefault(); b.click(); } }
-  else if(e.key === "Escape"){ quit(); }
+  else if(e.key === "Escape"){ requestQuit(); }
 });
 
 function act(a, v){
   const sub = sess && sess.sub;
   switch(a){
-    case "nav": view = v; resetArmed = false; render(); window.scrollTo(0,0); break;
+    case "nav": {
+      view = v; resetArmed = false; render(); window.scrollTo(0,0);
+      const h = document.querySelector("#app h1, #app .wordmark"); if(h){ h.setAttribute("tabindex","-1"); h.focus({preventScroll:true}); }
+      break;
+    }
     case "start": startSession(); break;
-    case "quit": quit(); break;
+    case "quit": requestQuit(); break;
     case "pause": togglePause(); break;
     case "skip": nextStep(); break;
     case "again": audio(); say(CHORDS[v].say); break;
@@ -781,14 +904,14 @@ function act(a, v){
     }
 
     case "ch-start": sub.phase = "run"; sub.drillEnd = performance.now() + 60000; renderContent(); say("Go"); break;
-    case "ch-step": { const i = $("#cnt"); if(i) i.value = Math.max(0, Math.min(120, (parseInt(i.value,10)||0) + (+v))); break; }
+    case "ch-step": { const i = $("#cnt"); if(i){ i.value = clamp((parseInt(i.value,10)||0) + (+v), 0, 120, 0); sub.cnt = +i.value; } break; }
     case "ch-save": {
       const i = $("#cnt"), n = Math.max(0, Math.min(120, parseInt(i && i.value, 10) || 0));
       const ps = pairs(), k = pkey(ps[sub.pi % ps.length]);
       (S.changes[k] = S.changes[k] || []).push({d:today(), n}); S.changes[k] = S.changes[k].slice(-60); save();
       sess.res.changes.push(n);
       if(n >= 30 && (bestOf(k) === n)) toast("30 clean changes. Absolute fret-fighter.");
-      sub.pi = pickPair(sub.pi + 1); sub.phase = "ready"; renderContent(); break;
+      sub.cnt = null; sub.pi = pickPair(sub.pi + 1); sub.phase = "ready"; renderContent(); break;
     }
     case "ch-switch": sub.pi = (sub.pi + 1) % pairs().length; renderContent(); break;
     case "ch-mode":
@@ -830,6 +953,10 @@ function act(a, v){
 }
 
 render();
+
+if("serviceWorker" in navigator && location.protocol === "https:"){
+  window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+}
 })();
 </script>
 </body>
